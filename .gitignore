@@ -1,6 +1,6 @@
-HELP.md
+../../../../IdeaProjects/feature/waas2.9/my-batis-plus-crud/HELP.md
 target/
-!.mvn/wrapper/maven-wrapper.jar
+!../../../../IdeaProjects/feature/waas2.9/my-batis-plus-crud/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 

@@ -30,4 +30,8 @@ public class UserUtils {
         }
         return exitingUser;
     }
+
+    public static boolean validateListIfEmpty(UserMapper userMapper) {
+        return userMapper.selectList(null) != null;
+    }
 }

@@ -18,6 +18,12 @@ public class GlobalException {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotExistException.class)
     public ResponseEntity exception(UserNotExistException exception){
-        return new ResponseEntity(exception.getLocalizedMessage(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(exception.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ListEmptyException.class)
+    public ResponseEntity exception(ListEmptyException exception){
+        return new ResponseEntity(exception.getLocalizedMessage(), HttpStatus.NOT_FOUND);
     }
 }

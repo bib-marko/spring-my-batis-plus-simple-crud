@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.demomybatisplus.mybatisplus.exception.ListEmptyException;
 import com.demomybatisplus.mybatisplus.exception.UserAlreadyExistException;
 import com.demomybatisplus.mybatisplus.exception.UserNotExistException;
 import com.demomybatisplus.mybatisplus.mapper.UserMapper;
@@ -61,11 +62,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Boolean restoreUser(Long id) {
+        if(UserUtils.validateIDifExisting(userMapper, id)) {
+            throw new UserNotExistException(String.format("User ID number: %d is not existing.", id));
+        }
         return userMapper.restoreUser(id);
     }
 
     @Override
     public IPage<User> queryList(UserQueryReq req) {
+        if(UserUtils.validateListIfEmpty(userMapper)){
+            throw new ListEmptyException("Empty List!");
+        }
         IPage<User> userIPageQueryPOIPage = new Page<>();
         userIPageQueryPOIPage.setCurrent(req.getCurrent());
         userIPageQueryPOIPage.setSize(req.getSize());
@@ -78,6 +85,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public IPage<User> queryDeletedList(UserQueryReq req) {
+        if(UserUtils.validateListIfEmpty(userMapper)){
+            throw new ListEmptyException("Empty List!");
+        }
         IPage<User> userIPageQueryPOIPage = new Page<>();
         userIPageQueryPOIPage.setCurrent(req.getCurrent());
         userIPageQueryPOIPage.setSize(req.getSize());

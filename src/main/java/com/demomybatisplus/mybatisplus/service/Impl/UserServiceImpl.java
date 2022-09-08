@@ -1,6 +1,7 @@
 package com.demomybatisplus.mybatisplus.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -30,24 +32,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserService userService;
 
-
-//    @Override
-//    public List<User> queryUser(UserQueryReq req) {
-//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.like("is_deleted", 0).or().isNull("email");
-//        return userMapper.selectList(queryWrapper);
-//    }
-
-//    @Override
-//    public IPage<User> queryUser(@RequestBody UserQueryReq req) {
-//        IPage<User> userIPageQueryPOIPage = userService.queryAccounts(req);
-//        return ResponseEntity.ok(userIPageQueryPOIPage);
-//    }
-
     @Override
     public ResponseEntity<User> saveUser(User user) {
         if(UserUtils.validateUsernameIfExisting(userMapper, user)) {
-            throw new UserAlreadyExistException(String.format("Username: %s already exist.", user.getName()));
+            throw new UserAlreadyExistException(String.format("Username: %s already exist.", user.getUsername()));
         }
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -56,18 +44,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public ResponseEntity<User> updateUser(User user) {
         if(UserUtils.validateUsernameIfExisting(userMapper, user)) {
-            throw new UserNotExistException(String.format("Username: %s is not existing.", user.getName()));
+            throw new UserNotExistException(String.format("User ID number: %s is not existing.", user.getId()));
         }
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("id", user.getId());
-        userMapper.update(user, queryWrapper);
+        userMapper.updateById(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<User> deleteUser(Long id) {
         if(UserUtils.validateIDifExisting(userMapper, id)) {
-            throw new UserNotExistException(String.format("User Id: %d is not existing.", id));
+            throw new UserNotExistException(String.format("User ID number: %d is not existing.", id));
         }
         userMapper.deleteById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
@@ -77,7 +63,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Boolean restoreUser(Long id) {
         return userMapper.restoreUser(id);
     }
-
 
     @Override
     public IPage<User> queryList(UserQueryReq req) {

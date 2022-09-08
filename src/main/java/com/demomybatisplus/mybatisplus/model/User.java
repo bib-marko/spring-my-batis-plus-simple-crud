@@ -11,9 +11,7 @@ public class User {
 
     @TableId(type = IdType.AUTO)
     private Long id;
-
-    @TableField("username")
-    private String name;
+    private String username;
     private Integer age;
     private String email;
 

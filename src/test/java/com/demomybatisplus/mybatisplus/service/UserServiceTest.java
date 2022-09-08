@@ -37,20 +37,20 @@ class UserServiceTest {
         log.info("Total count：" + count);
     }
 
-    @Test
-    public void testSaveBatch(){
-        // The length of SQL is limited, and it is impossible to insert massive data into a single SQL.
-        // Therefore, MP implements batch insertion in a generic Service instead of a generic Mapper
-        ArrayList<User> users = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            User user = new User();
-            user.setName("ybc" + i);
-            user.setAge(20 + i);
-            users.add(user);
-        }
-        //SQL:INSERT INTO t_user ( username, age ) VALUES ( ?, ? )
-        userService.saveBatch(users);
-    }
+//    @Test
+//    public void testSaveBatch(){
+//        // The length of SQL is limited, and it is impossible to insert massive data into a single SQL.
+//        // Therefore, MP implements batch insertion in a generic Service instead of a generic Mapper
+//        ArrayList<User> users = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            User user = new User();
+//            user.getUsername("ybc" + i);
+//            user.setAge(20 + i);
+//            users.add(user);
+//        }
+//        //SQL:INSERT INTO t_user ( username, age ) VALUES ( ?, ? )
+//        userService.saveBatch(users);
+//    }
 
     @Test
     public void test01(){
@@ -203,44 +203,35 @@ class UserServiceTest {
         users.forEach(System.out::println);
     }
 
-    @Test
-    public void test10() {
-        //Define query conditions, may be null (user did not enter)
-        String username = "a";
-        Integer ageBegin = 10;
-        Integer ageEnd = 24;
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        //Avoid using strings to represent fields, preventing runtime errors
-        queryWrapper
-                .like(StringUtils.isNotBlank(username), User::getName, username)
-                .ge(ageBegin != null, User::getAge, ageBegin)
-                .le(ageEnd != null, User::getAge, ageEnd);
-        List<User> users = userMapper.selectList(queryWrapper);
-        users.forEach(System.out::println);
-    }
+//    @Test
+//    public void test10() {
+//        //Define query conditions, may be null (user did not enter)
+//        String username = "a";
+//        Integer ageBegin = 10;
+//        Integer ageEnd = 24;
+//        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+//        //Avoid using strings to represent fields, preventing runtime errors
+//        queryWrapper
+//                .like(StringUtils.isNotBlank(username), User::getName, username)
+//                .ge(ageBegin != null, User::getAge, ageBegin)
+//                .le(ageEnd != null, User::getAge, ageEnd);
+//        List<User> users = userMapper.selectList(queryWrapper);
+//        users.forEach(System.out::println);
+//    }
 
-    @Test
-    public void test11() {
-        //Assemble the set clause
-        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper
-                .set(User::getAge, 26)
-                .set(User::getEmail, "wedinng@gmail.com")
-                .like(User::getName, "o")
-                .and(i -> i.lt(User::getAge, 24).or().isNotNull(User::getEmail)); //Logical precedence within lambda expressions
-        User user = new User();
-        int result = userMapper.update(user, updateWrapper);
-        log.info("Number of rows affected：" + result);
-    }
-
-
-
-
-
-
-
-
-
+//    @Test
+//    public void test11() {
+//        //Assemble the set clause
+//        LambdaUpdateWrapper<User> updateWrapper = new LambdaUpdateWrapper<>();
+//        updateWrapper
+//                .set(User::getAge, 26)
+//                .set(User::getEmail, "wedinng@gmail.com")
+//                .like(User::getName, "o")
+//                .and(i -> i.lt(User::getAge, 24).or().isNotNull(User::getEmail)); //Logical precedence within lambda expressions
+//        User user = new User();
+//        int result = userMapper.update(user, updateWrapper);
+//        log.info("Number of rows affected：" + result);
+//    }
 
 
 }

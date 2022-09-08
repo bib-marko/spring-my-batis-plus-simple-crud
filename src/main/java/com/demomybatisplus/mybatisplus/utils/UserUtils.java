@@ -11,7 +11,7 @@ public class UserUtils {
         boolean exitingUser = false;
         List<User> list = userMapper.selectList(null);
         for (int index = 0; index < list.size(); index++){
-            if(user.getName().equals(list.get(index).getName())){
+            if(user.getUsername().equals(list.get(index).getUsername())){
                  exitingUser = true;
                  break;
             }
@@ -20,11 +20,11 @@ public class UserUtils {
     }
 
     public static boolean validateIDifExisting(UserMapper userMapper, Long id) {
-        boolean exitingUser = false;
+        boolean exitingUser = true;
         List<User> list = userMapper.selectList(null);
         for (int index = 0; index < list.size(); index++){
             if(list.get(index).getId().equals(id)){
-                exitingUser = true;
+                exitingUser = false;
                 break;
             }
         }

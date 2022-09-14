@@ -2,6 +2,7 @@
  
 Sample Endpoint:
 > queryList - get the list
+
 > queryDeletedList - get the list which is declared as deleted
 > save - save new data
 > update - update data

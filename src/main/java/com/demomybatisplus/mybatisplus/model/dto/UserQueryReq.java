@@ -11,6 +11,6 @@ public class UserQueryReq {
     private Integer age;
     private String email;
     private Integer isDeleted;
-    private Integer current = 1;
-    private Integer size = 20;
+    private Integer current = 0;
+    private Integer size = 10;
 }

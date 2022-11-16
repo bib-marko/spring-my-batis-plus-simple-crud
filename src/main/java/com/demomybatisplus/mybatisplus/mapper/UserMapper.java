@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface UserMapper extends BaseMapper<User> {
     boolean restoreUser(Long id);
-    List<User> queryList(IPage<User> userQueryPOIPage, UserQueryReq req);
-    List<User> queryDeletedList(IPage<User> userQueryPOIPage, UserQueryReq req);
+    List<User> queryList(UserQueryReq req);
+    List<User> queryDeletedList(UserQueryReq req);
 }

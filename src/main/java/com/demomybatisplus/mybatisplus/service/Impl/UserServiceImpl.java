@@ -12,6 +12,7 @@ import com.demomybatisplus.mybatisplus.mapper.UserMapper;
 import com.demomybatisplus.mybatisplus.model.User;
 import com.demomybatisplus.mybatisplus.model.dto.UserQueryReq;
 import com.demomybatisplus.mybatisplus.service.UserService;
+import com.demomybatisplus.mybatisplus.utils.PageUtil;
 import com.demomybatisplus.mybatisplus.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Slf4j
 @Service
@@ -73,14 +72,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(UserUtils.validateListIfEmpty(userMapper)){
             throw new ListEmptyException("Empty List!");
         }
-        IPage<User> userIPageQueryPOIPage = new Page<>();
-        userIPageQueryPOIPage.setCurrent(req.getCurrent());
-        userIPageQueryPOIPage.setSize(req.getSize());
-
-        List<User> userQueryPOList = userMapper.queryList(userIPageQueryPOIPage,  req);
-        List<User> userQueryPOListTotal = userMapper.queryList(null, req);
-        userIPageQueryPOIPage.setTotal(userQueryPOListTotal.size());
-        return userIPageQueryPOIPage.setRecords(userQueryPOList);
+        IPage<User> page = new Page<>();
+        page.setCurrent(req.getCurrent());
+        page.setSize(req.getSize());
+        List<User> userList = PageUtil.toPage((int) page.getCurrent(), (int) page.getSize(), userMapper.queryList(req));
+        return page.setRecords(userList).setTotal(userList.size());
     }
 
     @Override
@@ -88,14 +84,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if(UserUtils.validateListIfEmpty(userMapper)){
             throw new ListEmptyException("Empty List!");
         }
-        IPage<User> userIPageQueryPOIPage = new Page<>();
-        userIPageQueryPOIPage.setCurrent(req.getCurrent());
-        userIPageQueryPOIPage.setSize(req.getSize());
-
-        List<User> userQueryPOList = userMapper.queryDeletedList(userIPageQueryPOIPage,  req);
-        List<User> userQueryPOListTotal = userMapper.queryDeletedList(null, req);
-        userIPageQueryPOIPage.setTotal(userQueryPOListTotal.size());
-        return userIPageQueryPOIPage.setRecords(userQueryPOList);
+        IPage<User> page = new Page<>();
+        page.setCurrent(req.getCurrent());
+        page.setSize(req.getSize());
+        List<User> deletedUserList = PageUtil.toPage((int) page.getCurrent(), (int) page.getSize(), userMapper.queryDeletedList(req));
+        return page.setRecords(deletedUserList).setTotal(deletedUserList.size());
     }
 
 }

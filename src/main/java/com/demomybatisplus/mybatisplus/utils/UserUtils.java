@@ -32,6 +32,6 @@ public class UserUtils {
     }
 
     public static boolean validateListIfEmpty(UserMapper userMapper) {
-        return userMapper.selectList(null) != null;
+        return userMapper.selectList(null) == null;
     }
 }

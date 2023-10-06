@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demomybatisplus.mybatisplus.mapper.AnnouncementMapper">
+
+    <select id="queryList" parameterType="com.demomybatisplus.mybatisplus.model.dto.AnnouncementQueryReq" resultType="com.demomybatisplus.mybatisplus.model.Announcement">
+        SELECT id,
+               title,
+               description,
+               reason_for_deleting,
+               is_deleted,
+               created_at,
+               updated_at
+        FROM t_announcement
+        WHERE is_deleted != 1
+    </select>
+
+</mapper>

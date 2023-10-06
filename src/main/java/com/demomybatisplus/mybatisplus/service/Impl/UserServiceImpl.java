@@ -25,7 +25,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-
     @Autowired
     private UserMapper userMapper;
 
@@ -61,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Boolean restoreUser(Long id) {
-        if(UserUtils.validateIDifExisting(userMapper, id)) {
+        if(!UserUtils.validateIDifExisting(userMapper, id)) {
             throw new UserNotExistException(String.format("User ID number: %d is not existing.", id));
         }
         return userMapper.restoreUser(id);
@@ -90,5 +89,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<User> deletedUserList = PageUtil.toPage((int) page.getCurrent(), (int) page.getSize(), userMapper.queryDeletedList(req));
         return page.setRecords(deletedUserList).setTotal(deletedUserList.size());
     }
+
 
 }
